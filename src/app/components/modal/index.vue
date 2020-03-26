@@ -6,10 +6,18 @@
     </div>
     <div class="modal-body">
       <h3>Title</h3>
-      <input placeholder="input a title" v-model.lazy="form.title" />
+      <input placeholder="input a title" v-model="form.title" v-bind:maxlength="titleMax" />
       <h3>Description</h3>
-      <input placeholder="input a description" v-model.lazy="form.desc" />
-      <button v-on:click="submitHandler">Submit</button>
+      <textarea
+        placeholder="input a description"
+        v-model="form.desc"
+        rows="6"
+        v-bind:maxlength="descMax"
+      />
+      <button
+        v-on:click="submitHandler"
+        v-bind:class="(form.title.length < 3 || form.desc.length < 3) && 'disabled'"
+      >Submit</button>
     </div>
   </div>
 </template>
@@ -24,24 +32,56 @@ export default {
       form: {
         title: "",
         desc: ""
-      }
+      },
+      titleMin: 33,
+      titleMax: 30,
+      descMin: 3,
+      descMax: 255
     };
   },
   methods: {
     submitHandler() {
-      const date = new Date();
-      const convertDate = moment(date).format("L");
-
-      const tmp = {
-        ...this.form,
-        date: convertDate
-      };
-      this.$store.commit("landing/ADD_TASK", tmp);
-      this.$emit("modalHandler", false);
-      localStorage.setItem(
-        "tasks",
-        JSON.stringify(this.$store.state.landing.tasks)
-      );
+      if (localStorage.getItem("tasks")) {
+        console.log("masuk localStorage");
+        const date = new Date();
+        const convertDate = moment(date).format("L");
+        const tmp = {
+          ...this.form,
+          date: convertDate
+        };
+        // this.$store.commit("landing/ADD_TASK", tmp);
+        this.$store.commit("landing/ADD_TASK_LOCAL_STORAGE_SECOND", tmp);
+        this.$emit("modalHandler", false);
+        localStorage.setItem(
+          "tasks",
+          JSON.stringify(this.$store.state.landing.tasksLocalStorage)
+        );
+        this.form = {
+          title: "",
+          desc: ""
+        };
+        return;
+      } else {
+        console.log("tidak masuk localStorage");
+        const date = new Date();
+        const convertDate = moment(date).format("L");
+        const tmp = {
+          ...this.form,
+          date: convertDate
+        };
+        // this.$store.commit("landing/ADD_TASK", tmp);
+        this.$store.commit("landing/ADD_TASK_LOCAL_STORAGE_FIRST", tmp);
+        this.$emit("modalHandler", false);
+        localStorage.setItem(
+          "tasks",
+          JSON.stringify(this.$store.state.landing.tasksLocalStorage)
+        );
+        this.form = {
+          title: "",
+          desc: ""
+        };
+        return;
+      }
     }
   }
 };
@@ -89,6 +129,16 @@ export default {
   box-sizing: border-box;
 }
 
+#modal .modal-body textarea {
+  width: 100%;
+  display: block;
+  margin: 0px 0px 10px 0px;
+  padding: 10px;
+  border: unset;
+  /* height: 35px; */
+  box-sizing: border-box;
+}
+
 #modal .modal-body button {
   background: lightgreen;
   color: #000;
@@ -98,5 +148,11 @@ export default {
   font-weight: bold;
   padding: 10px 15px;
   margin-top: 10px;
+}
+
+#modal .modal-body .disabled {
+  background: #e8e9e9;
+  color: #6b727b;
+  pointer-events: none;
 }
 </style>

@@ -1,6 +1,5 @@
 import axios from "axios";
 import moment from "moment";
-// import moment from "moment";
 
 const Landing = {
   namespaced: true,
@@ -15,6 +14,7 @@ const Landing = {
       { name: "A-Z", value: "1", disabled: false },
       { name: "Z-A", value: "2", disabled: false }
     ],
+    tasksLocalStorage: [],
     tasks: [
       {
         title: "Belajar dirumah",
@@ -69,7 +69,6 @@ const Landing = {
   getters: {
     latestTask: state => {
       const latestTask = [...state.tasks].reverse();
-      console.log("cek latestTask:", latestTask);
       latestTask.sort((a, b) => {
         let dateMomentObjectA = moment(a.date, "DD/MM/YYYY");
         var dateObjectA = dateMomentObjectA.toDate();
@@ -82,8 +81,8 @@ const Landing = {
       return latestTask;
     },
     oldestTask: state => {
-      const oldestTask = [...state.tasks].reverse();
-      console.log("cek oldestTask:", oldestTask);
+      // const oldestTask = [...state.tasks].reverse();
+      const oldestTask = [...state.tasks];
       oldestTask.sort((a, b) => {
         let dateMomentObjectA = moment(a.date, "DD/MM/YYYY");
         var dateObjectA = dateMomentObjectA.toDate();
@@ -103,7 +102,6 @@ const Landing = {
         if (nameA === nameB) return 0;
         return nameA > nameB ? 1 : -1;
       });
-      console.log("cek ascTask:", ascTask);
       return ascTask;
     },
     descTask: state => {
@@ -114,9 +112,7 @@ const Landing = {
         if (nameA === nameB) return 0;
         return nameA > nameB ? 1 : -1;
       });
-      console.log("cek descTask:", descTask);
       return descTask.reverse();
-
       // const descTask = [...state.tasks];
       // descTask.sort((a, b) => {
       //   let nameA = a.title.toLowerCase();
@@ -126,6 +122,52 @@ const Landing = {
       // });
       // console.log("cek descTask:", descTask);
       // return descTask;
+    },
+    latestTaskLocalStorage: state => {
+      const latestTaskLocalStorage = [...state.tasksLocalStorage].reverse();
+      latestTaskLocalStorage.sort((a, b) => {
+        let dateMomentObjectA = moment(a.date, "DD/MM/YYYY");
+        var dateObjectA = dateMomentObjectA.toDate();
+        let dateMomentObjectB = moment(b.date, "DD/MM/YYYY");
+        var dateObjectB = dateMomentObjectB.toDate();
+        let c = dateObjectA;
+        let d = dateObjectB;
+        return d - c;
+      });
+      return latestTaskLocalStorage;
+    },
+    oldestTaskLocalStorage: state => {
+      const oldestTaskLocalStorage = [...state.tasksLocalStorage];
+      oldestTaskLocalStorage.sort((a, b) => {
+        let dateMomentObjectA = moment(a.date, "DD/MM/YYYY");
+        var dateObjectA = dateMomentObjectA.toDate();
+        let dateMomentObjectB = moment(b.date, "DD/MM/YYYY");
+        var dateObjectB = dateMomentObjectB.toDate();
+        let c = dateObjectA;
+        let d = dateObjectB;
+        return c - d;
+      });
+      return oldestTaskLocalStorage;
+    },
+    ascTaskLocalStorage: state => {
+      const ascTaskLocalStorage = [...state.tasksLocalStorage];
+      ascTaskLocalStorage.sort((a, b) => {
+        let nameA = a.title.toLowerCase();
+        let nameB = b.title.toLowerCase();
+        if (nameA === nameB) return 0;
+        return nameA > nameB ? 1 : -1;
+      });
+      return ascTaskLocalStorage;
+    },
+    descTaskLocalStorage: state => {
+      const descTaskLocalStorage = [...state.tasksLocalStorage];
+      descTaskLocalStorage.sort((a, b) => {
+        let nameA = a.title.toLowerCase();
+        let nameB = b.title.toLowerCase();
+        if (nameA === nameB) return 0;
+        return nameA > nameB ? 1 : -1;
+      });
+      return descTaskLocalStorage.reverse();
     }
   },
   mutations: {
@@ -148,6 +190,15 @@ const Landing = {
       };
       state.filter = tmp;
       state.option = payload;
+    },
+    SET_TASKS_LOCAL_STORAGE(state, payload) {
+      state.tasksLocalStorage = payload;
+    },
+    ADD_TASK_LOCAL_STORAGE_FIRST(state, payload) {
+      state.tasksLocalStorage = [...state.tasks, payload];
+    },
+    ADD_TASK_LOCAL_STORAGE_SECOND(state, payload) {
+      state.tasksLocalStorage = [...state.tasksLocalStorage, payload];
     }
   },
   actions: {

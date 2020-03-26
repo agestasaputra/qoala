@@ -48,8 +48,6 @@ export default {
         latestTask: true
       };
       this.$store.commit("landing/LATEST_TASK", tmp);
-      localStorage.setItem("tasks", JSON.stringify(this.latestTask));
-      return;
     },
     oldestHandler() {
       console.log("oldestHandler invoked!");
@@ -58,8 +56,6 @@ export default {
         latestTask: false
       };
       this.$store.commit("landing/OLDEST_TASK", tmp);
-      localStorage.setItem("tasks", JSON.stringify(this.oldestTask));
-      return;
     }
   }
 };
