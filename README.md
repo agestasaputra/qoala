@@ -1,24 +1,14 @@
-# qoala-frontend
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Project setup
-```
-yarn install
-```
+## Available Scripts
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+In the project directory, you can run:
 
-### Compiles and minifies for production
-```
-yarn build
-```
+How to run this project:
 
-### Lints and fixes files
-```
-yarn lint
-```
+1. Yarn install or npm install
+2. Yarn start or npm start
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Live Demo
+http://agestasaputra-qoala.surge.sh/
