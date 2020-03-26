@@ -5,6 +5,26 @@
         <AppCard v-bind:data="task" />
       </Fragment>
     </Fragment>
+    <Fragment v-else-if="this.filter.latestTask">
+      <Fragment v-for="task in latestTask" v-bind:key="task.id">
+        <AppCard v-bind:data="task" />
+      </Fragment>
+    </Fragment>
+    <Fragment v-else-if="this.filter.oldestTask">
+      <Fragment v-for="task in this.oldestTask" v-bind:key="task.id">
+        <AppCard v-bind:data="task" />
+      </Fragment>
+    </Fragment>
+    <Fragment v-else-if="this.option === '1'">
+      <Fragment v-for="task in this.ascTask" v-bind:key="task.id">
+        <AppCard v-bind:data="task" />
+      </Fragment>
+    </Fragment>
+    <Fragment v-else-if="this.option === '2'">
+      <Fragment v-for="task in this.descTask" v-bind:key="task.id">
+        <AppCard v-bind:data="task" />
+      </Fragment>
+    </Fragment>
     <Fragment v-else>
       <Fragment v-for="task in latestTask" v-bind:key="task.id">
         <AppCard v-bind:data="task" />
@@ -30,17 +50,19 @@ export default {
     Fragment
   },
   computed: {
-    ...mapState("landing", ["tasks"]),
-    ...mapGetters("landing", ["latestTask"])
+    ...mapState("landing", ["tasks", "filter", "option"]),
+    ...mapGetters("landing", [
+      "latestTask",
+      "oldestTask",
+      "ascTask",
+      "descTask"
+    ])
   },
   created() {
     if (localStorage.getItem("tasks")) {
-      console.log("localStorage ada isinya");
       let tmp = JSON.parse(localStorage.getItem("tasks"));
       this.localStore = tmp.reverse();
-      return;
     } else {
-      console.log("localStorage kosong");
       return;
     }
   }

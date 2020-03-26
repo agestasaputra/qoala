@@ -38,9 +38,6 @@ export default {
       };
       this.$store.commit("landing/ADD_TASK", tmp);
       this.$emit("modalHandler", false);
-
-      // const data = [this.$store.state.landing.tasks];
-      // console.log("cek data:", data);
       localStorage.setItem(
         "tasks",
         JSON.stringify(this.$store.state.landing.tasks)
