@@ -119,7 +119,10 @@ export default {
   grid-gap: 30px;
 }
 
-.card {
-  background: lightgreen;
+@media screen and (max-width: 480px) {
+  #body {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+  }
 }
 </style>

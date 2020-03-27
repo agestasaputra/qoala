@@ -135,7 +135,7 @@ export default {
   margin: 0px 0px 10px 0px;
   padding: 10px;
   border: unset;
-  /* height: 35px; */
+  resize: none;
   box-sizing: border-box;
 }
 
@@ -154,5 +154,19 @@ export default {
   background: #e8e9e9;
   color: #6b727b;
   pointer-events: none;
+}
+
+@media screen and (max-width: 768px) {
+  #modal {
+    width: 45%;
+    padding: 10px 20px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #modal {
+    width: 80%;
+    padding: 10px 20px;
+  }
 }
 </style>
